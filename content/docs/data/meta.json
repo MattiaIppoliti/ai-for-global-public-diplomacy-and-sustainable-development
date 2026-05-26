@@ -1,0 +1,6 @@
+{
+  "title": "Data",
+  "description": "Data section",
+  "root": true,
+  "pages": ["index"]
+}

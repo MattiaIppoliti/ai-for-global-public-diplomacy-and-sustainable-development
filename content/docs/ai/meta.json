@@ -1,0 +1,6 @@
+{
+  "title": "AI",
+  "description": "AI section",
+  "root": true,
+  "pages": ["index"]
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Docs",
+  "description": "Documentation",
+  "root": true,
+  "pages": ["index"]
+}
