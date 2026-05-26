@@ -1,6 +1,13 @@
 {
-  "title": "AI",
-  "description": "AI section",
+  "title": "AI Awareness",
+  "description": "Management course on adoption strategy, policy, and the use of generative AI tools for individual productivity.",
   "root": true,
-  "pages": ["index"]
+  "pages": [
+    "index",
+    "definitions",
+    "ethics-security",
+    "strategy",
+    "applications",
+    "appendix"
+  ]
 }

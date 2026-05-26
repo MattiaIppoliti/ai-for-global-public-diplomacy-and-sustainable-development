@@ -1,0 +1,224 @@
+---
+title: Appendix — Under the Hood
+description: The mechanics behind the user-facing concepts — pre-training vs. fine-tuning vs. prompt engineering, from LM to LLM to Foundation Model to LMM, and where the Transformer math sits.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+This appendix is for readers who want the layer beneath the user-facing material. Skip it if you only need to use the tools.
+
+## Pre-training vs. Fine-tuning vs. Prompt Engineering
+
+Three ways to make a model behave the way you want. They differ enormously in cost, flexibility and University-fit.
+
+### Pre-training
+
+Starting from **randomly initialized model weights**, pre-training means training the model **from scratch**. It optimizes the ability to accurately predict the next token. By contrast, *post-training* optimizes the model to generate responses that **users prefer**.
+
+> Pre-training is the most resource-intensive phase. It accounts for ~**98%** of all data and computational resources compared with the subsequent stages.
+
+### Fine-tuning
+
+Continuing the training phase of an **already-trained** model on a domain-specific dataset. Typically requires fewer resources than full training.
+
+### Prompt engineering
+
+Changing a model's behavior **without modifying the model's weights**. Often the right instructions are enough.
+
+### Comparison
+
+| | Pre / Post-training | Fine-tuning | Prompt engineering |
+|---|---|---|---|
+| **Definition** | Train the model from scratch (or continue training to align it with user preferences). | Take an already-trained model and continue training on a domain dataset. | Change behavior via the prompt only. No weights touched. |
+| **✓ Pros** | Models that respond perfectly to unique business needs. | Models can be customized more extensively than with prompt engineering. Greater efficiency than prompt engineering — prompts become shorter because behavior is incorporated into the model. | High flexibility — no model training, no GPU costs, no training dataset. Greater explainability — behavior is directly linked to prompt text, useful for compliance. |
+| **✗ Cons** | Most resource-intensive phase (98% of data + compute). Takes the longest. Greater maintenance effort. | Higher training costs — dataset, GPUs, domain knowledge, maintenance. Less flexible — if the domain or project changes, fine-tuning must be redone. | Greater fragility — small variations in the prompt can lead to different results. |
+| **Usage at Luiss** | Not used. | Not used. | **Preferred target solution.** |
+
+<Callout type="info">
+  Luiss adopts AI through prompt engineering on approved foundation models — not by training or fine-tuning models in-house. This keeps cost, complexity and risk contained.
+</Callout>
+
+---
+
+## From Language Models to Foundation Models
+
+A short history.
+
+Foundation Models emerged from **Large Language Models (LLMs)**, which themselves grew out of simple **Language Models (LMs)**. Although applications like ChatGPT and GitHub Copilot may seem to have appeared out of nowhere, they are the result of decades of progress — the earliest language models date back to the 1950s.
+
+### Language Model (LM)
+
+A **Language Model** encodes statistical information about one or more languages. Intuitively, this information tells us **how likely a word is to appear in a given context**.
+
+Example — given the context *"My favorite color is __"*, a language model that encodes English should predict *"blue"* more often than *"car"*.
+
+**Embeddings** are numerical vectors that incorporate semantically similar information. Words with similar meanings end up close together in the embedding space. Famous examples:
+
+- `king − man + woman ≈ queen` (gender axis)
+- `walking → walked, swimming → swam` (verb tense axis)
+- `Italy ↔ Rome, Germany ↔ Berlin, Russia ↔ Moscow` (country–capital axis)
+
+### Large Language Model (LLM)
+
+A Language Model with — at present — **more than 100 billion parameters**. A **parameter** is a variable within a machine-learning model that is updated during training. In general (though not always), the more parameters, the greater the model's ability to learn desired behaviors.
+
+### Foundation Model
+
+LLMs are limited to **text**. Humans perceive the world through sight, hearing, touch, and more. To let AI operate in the real world, it must process data beyond text. Although many still call Gemini and GPT "LLMs", it is more accurate to call them **Foundation Models**.
+
+> A **foundation model** is an AI system capable of automatically producing various types of content (text, images, audio, video) in the form of natural language.
+
+The Foundation Model umbrella covers, among others:
+
+- **Large Language Models (LLMs)** — text.
+- **Computer Vision Models** — images.
+- **Audio Foundation Models** — speech and audio.
+- **Multimedia / Multimodal Models** — combinations.
+- **Domain-Specific Foundation Models** — fine-tuned for a particular field.
+
+### Multimodal Model (LMM)
+
+A model that can work with more than one data modality is also called a **Multimodal Model**. A generative multimodal model is also called a **Large Multimodal Model (LMM)**.
+
+If a language model generates the next token conditioned only on text tokens, a multimodal model generates the next token conditioned on text tokens **and** image tokens (or any modality the model supports):
+
+```
+Text tokens: "This is a"   ──┐
+                              ├──→  Multimodal model  ──→  Next token: "Puppy"
+Visual tokens: 🐕            ──┘
+```
+
+---
+
+## Retrieval-Augmented Generation (RAG)
+
+RAG is the architecture behind tools like NotebookLM (see [Section 4 → NotebookLM](/ai/applications#notebooklm--turning-your-documents-into-anything)).
+
+> **RAG (Retrieval-Augmented Generation)** is a technique that lets Large Language Models retrieve information from an **external knowledge base** (documents, data, corporate/university media) before generating a response. The retrieved information is provided to the LLM as context. This **increases accuracy** and **reduces hallucinations**.
+
+### Flow
+
+1. User asks a question.
+2. A retriever component searches the external knowledge base for the most relevant passages.
+3. The retrieved passages are passed to the LLM as additional context alongside the original question.
+4. The LLM generates the answer grounded in those passages.
+
+### Why RAG works
+
+A plain LLM has three core limitations:
+
+- **Lacks domain knowledge** — it was not trained on your private documents.
+- **May not be up-to-the-minute** — the training data has a cutoff.
+- **Cannot provide citations** — its knowledge is baked into weights, not addressable as sources.
+
+RAG fixes all three by **separating knowledge from reasoning**. The LLM is still doing the language generation, but the *facts* come from a vector database of your sources.
+
+### RAG components
+
+| # | Component | Role |
+|---|---|---|
+| 1 | **Embeddings** | Floating-point vectors that represent text or other data. They capture semantic meaning and context; text with similar meaning has closer embeddings. |
+| 2 | **Vector Search** | Data is stored in a specialized vector database optimized for fast similarity lookups. |
+| 3 | **LLM** | Retrieved document chunks are sent to an LLM (e.g. a Gemini model) which composes the response from them. |
+
+### Embedding space — what it captures
+
+A **multimodal embedding model** turns inputs (a document, an image, a video clip) into vectors in a shared space. The **position** of an object within that space encodes meaning. A photo of a gray tabby cat in front of a Christmas tree and the text *"gray tabby cat laying in front of a Christmas tree"* end up close to each other in that joint embedding space, even though one is pixels and the other is words.
+
+### Vector search
+
+When you ask a question, the question is embedded into the same space. The retriever finds the nearest neighbors — the document chunks whose vectors are most similar to the query vector — and returns them as candidates, ranked by similarity. These candidates are what gets handed to the LLM.
+
+---
+
+## What is actually inside a Transformer?
+
+This is the most technical section in the course. Skim it on first read.
+
+The generative AI we use today is based on a **Transformer** architecture, which — unlike the standard RNN used in NLP — enables **parallel processing**. The Transformer has two main components.
+
+### Encoder
+
+Converts an input sequence of **embeddings** (input words turned into numerical vectors) into a contextual representation. Its output is a sequence of embedding vectors — often called the **hidden state** or **context** — that capture each token's role within the entire sentence.
+
+### Decoder
+
+Uses the encoder's hidden state to iteratively generate an output sequence of tokens, one at a time. The raw outputs of the decoder are transformed into a **probability distribution** over the possible next tokens via the **softmax** function — which ensures probabilities fall between 0 and 1 and sum to 1. The model then chooses the most probable token as the next output.
+
+### Flow
+
+```
+Inputs  → Embedding → Encoder ─────────────┐
+                                            ↓
+Inputs  → Embedding → Decoder → Softmax → Output
+```
+
+### The attention mechanism
+
+At the heart of the Transformer is **multi-head self-attention**. The simplified math:
+
+```
+Attention(Q, K, V) = softmax( (Q · Kᵀ) / √dₖ ) · V
+
+MultiHead(Q, K, V) = concat(head₁, …, headₕ) · Wᴼ
+where headᵢ = Attention( Q·Wᵢᵠ , K·Wᵢᴷ , V·Wᵢⱽ )
+```
+
+- **Q (Query)** — what the current token is "looking for".
+- **K (Key)** — what each other token "offers".
+- **V (Value)** — the content each other token contributes if attended to.
+- **dₖ** — the dimensionality of K, used to scale dot products so softmax stays well-behaved.
+
+Each **head** learns a different relationship pattern (syntax, coreference, long-range dependency, etc.). The outputs of multiple heads are concatenated and projected back into the residual stream.
+
+### Further reading
+
+- *"Attention Is All You Need"* (Vaswani et al., 2017) — the paper that introduced the Transformer.
+- Anthropic's interpretability research — recent work on understanding what individual circuits inside a Transformer actually compute.
+
+<Callout type="info">
+  You do not need to understand attention math to use Gemini or Copilot. You **do** need to know it exists, because every quirk of modern AI — context windows, hallucinations, prompt sensitivity — is downstream of these mechanics.
+</Callout>
+
+---
+
+## Glossary
+
+A short reference for the terms used across the course.
+
+| Term | Definition |
+|---|---|
+| **AI** | Engineered systems that produce output (content, predictions, recommendations, decisions) for user-defined objectives. |
+| **ML** | Subset of AI. Algorithms that learn patterns from data. |
+| **DL** | Subset of ML. Uses deep neural networks. |
+| **GenAI** | Subset of AI. Models that create new content from a prompt. |
+| **LM / LLM** | Language Model / Large Language Model. Predicts the probability of the next token. |
+| **Foundation Model** | Large multimodal model that generates content across text, image, audio, video. |
+| **LMM** | Large Multimodal Model — a generative foundation model that handles multiple modalities. |
+| **Transformer** | Neural network architecture (2017) that powers modern GenAI. |
+| **Self-attention** | Mechanism that lets each token attend to every other token in the sequence in parallel. |
+| **Embedding** | Numerical vector representing a piece of data; positions encode meaning. |
+| **Token** | Unit of text or data the model processes — roughly a sub-word piece. |
+| **Temperature** | Sampling parameter controlling randomness in next-token selection. |
+| **Top-K / Top-P** | Sampling techniques that restrict the candidate token set. |
+| **Hallucination** | Plausible-sounding but ungrounded or false model output. |
+| **Bias** | Systematic skew inherited from training data or framing. |
+| **Fluency Effect** | Cognitive trap — coherent, fluent answers feel more reliable than they are. |
+| **Pre-training** | Training from scratch — the most expensive phase. |
+| **Fine-tuning** | Continued training of a pre-trained model on a domain dataset. |
+| **Prompt engineering** | Shaping model behavior via the prompt only. |
+| **RAG** | Retrieval-Augmented Generation — grounding the LLM in external documents. |
+| **Vector search** | Fast similarity lookup over embeddings stored in a vector database. |
+| **Agent** | A configured assistant (persona + instructions + knowledge + tools) callable by name. |
+| **Gem** | Google's agent unit inside Gemini. |
+| **Copilot Studio** | Microsoft's agent-building environment in M365 Copilot. |
+| **AI Act** | Regulation (EU) 2024/1689 — risk-based EU framework for AI. |
+| **GDPR** | Regulation (EU) 2016/679 — EU data-protection regulation. |
+| **Data Act** | Regulation (EU) 2023/2854 — EU regulation on access to and use of data. |
+| **AI Literacy** | Skills to understand, interact with and critically evaluate AI. |
+
+---
+
+## End of course
+
+Back to [course overview](/ai).

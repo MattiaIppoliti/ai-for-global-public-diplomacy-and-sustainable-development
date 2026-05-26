@@ -1,0 +1,231 @@
+---
+title: 1. Definitions of AI
+description: What AI, Machine Learning, Deep Learning and Generative AI actually are — and what generative AI is NOT.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+The terms *AI*, *ML*, *Deep Learning* and *Generative AI* are often used interchangeably in the press, in vendor pitches, and in internal conversations. They are not interchangeable. They name nested subsets of the same field, each with its own capabilities, costs and failure modes.
+
+## Some definitions
+
+### Artificial Intelligence (AI)
+
+> Artificial intelligence is a technical-scientific field dedicated to engineered systems that generate output such as content, predictions, recommendations, or decisions for a given set of user-defined objectives.
+> — *ISO/IEC 22989:2022*
+
+AI is the outermost ring. Everything below is a subset of AI.
+
+### Machine Learning (ML)
+
+A subset of AI that uses algorithms capable of **learning information and recognizing patterns from datasets** in order to make better decisions.
+
+Machine learning can be:
+
+- **Supervised** — uses labeled datasets for training. The model learns to map an input to a known target.
+- **Unsupervised** — identifies patterns within unlabeled datasets. The model is data-driven and discovers structure on its own.
+
+### Deep Learning (DL)
+
+An advanced subset of Machine Learning that leverages **neural networks** to learn from large volumes of data. Neural networks let systems autonomously learn hidden patterns in a dataset and build more efficient decision rules.
+
+The most common applications of deep learning are **computer vision** and **natural language processing (NLP)**.
+
+### Generative Artificial Intelligence (GenAI)
+
+A subset of AI that uses **generative models** to produce text, images, video or new data in other formats. These models learn the patterns and structures underlying their training data and use them to produce new data based on the input, which often takes the form of natural-language prompts.
+
+<Callout type="info">
+  **Mental model** — think of these four as Russian dolls: AI ⊃ ML ⊃ DL ⊃ GenAI. ChatGPT, Gemini and Copilot all sit in the innermost ring.
+</Callout>
+
+## ML vs Deep Learning: a comparison
+
+| | Machine Learning | Deep Learning |
+|---|---|---|
+| **Approach** | Algorithms that learn patterns from data through **manual feature engineering** | **Deep neural networks** that automatically extract features from raw data |
+| **Applications** | Classification & regression · Fraud and anomaly detection · Recommendation systems · Demand forecasting · Sentiment analysis | Image and video recognition · NLP · Text and image generation (GenAI) · Autonomous vehicles · Advanced machine translation |
+
+## Predictive AI vs Generative AI
+
+| | Predictive AI | Generative AI |
+|---|---|---|
+| **What it does** | Mature technologies widely adopted for optimizing analytical processes. | Uses models trained on large amounts of data to create *new* content — text, images, audio, video, code — in response to a prompt. |
+| **Typical applications** | Predictive modeling & forecasting · Customer-trend forecasting · Customer segmentation · Analytics & attribution · Performance measurement | Document summarization · Image / graphic / video creation & editing · Translation · Customer assistance · Software code generation · Intelligent agents & workflow automation |
+
+## A closer look at Machine Learning
+
+Machine learning splits into two main learning modes.
+
+### Supervised learning
+
+You give the model a large dataset of inputs *with labels*. It learns the mapping and can then label new, unseen inputs.
+
+> **Example** — Classifying dogs and cats from a labeled image dataset. The machine learns from the labels and can then judge whether a new image is a dog or a cat. Supervised learning relies on labeled data and **identifies a target**.
+
+### Unsupervised learning
+
+You give the model a dataset *without* labels. It finds underlying patterns and groups the data on its own.
+
+> **Example** — Given a pile of unlabeled animal images, the algorithm groups visually similar ones together without being told what they are. Unsupervised learning is **data-driven and identifies patterns**.
+
+### Use cases for the two learning modes
+
+| Mode | Sub-task | What it does | Typical algorithm |
+|---|---|---|---|
+| Supervised | **Classification** | Predicts a categorical variable (e.g. is this image a cat or a dog?) | Logistic regression |
+| Supervised | **Regression** | Predicts a numeric variable (e.g. forecast next month's sales) | Linear regression |
+| Unsupervised | **Clustering** | Groups similar data points (e.g. customer segmentation) | k-means |
+| Unsupervised | **Association** | Identifies underlying relationships (e.g. which products are bought together) | Association rule learning |
+| Unsupervised | **Dimensionality reduction** | Compresses many features into a simpler rule (e.g. an insurance pricing model) | Principal Component Analysis |
+
+## A closer look at Generative AI
+
+Generative AI takes a **prompt** (an instruction or question) and either produces new content or takes an action.
+
+### The two GenAI patterns
+
+```
+Prompt → AI agent → Generates content → text / code / image / speech / video / 3D
+Prompt → AI agent → Takes action     → automate workflow, plan travel, schedule…
+```
+
+### How does AI generate new content?
+
+The model learns from an enormous amount of pre-existing content (close to all human knowledge available on the web) — text, images, video. This process is called **training**, and it produces a **Foundation Model**.
+
+A foundation model can:
+
+- **Solve general problems** out of the box — it has been trained on broad data.
+- **Solve specific problems** when further trained ("fine-tuned") on a smaller domain-specific dataset.
+
+The parameter count of foundation models has grown dramatically:
+
+- GPT-3 (2020) — ~175 billion parameters
+- GPT-5.2 / Gemini 3 Pro (2025) — ~1 trillion parameters
+
+### Multimodal models
+
+A **Multimodal Model** is a foundation model that can understand *and* generate different types of content — text, images, video. Given an input in one modality, it can produce output in one or more different modalities (e.g. an image → a written description, or a written description → a video).
+
+### How a generative model picks the next word
+
+The model **predicts the probability of the next token** given everything that came before.
+
+Example — for the prompt *"The garden was full of beautiful…"* an LLM might assign:
+
+```
+[ flowers (0.55), trees (0.23), herbs (0.10), … , bugs (0.03) ]
+```
+
+It then samples from that distribution. The setting that controls how "adventurous" the sampling is, is called **temperature**.
+
+### Model temperature
+
+Temperature controls the degree of randomness when picking the next output token.
+
+- **Low temperature** narrows the range toward higher-probability words. Use when you want **typical, predictable** output (regulatory summaries, factual answers).
+- **High temperature** extends the range to less-probable words. Use when you want **creative** output (brainstorming, marketing copy).
+
+Other knobs include:
+
+- **Top-K** — only consider the top *K* most-probable tokens.
+- **Top-P (nucleus sampling)** — consider the minimum set of tokens whose cumulative probability reaches *P*.
+- **Presence penalty** — penalize tokens that have already appeared, to encourage diversity.
+
+<Callout type="info">
+  There is no one-size-fits-all temperature setting. It depends entirely on the task.
+</Callout>
+
+## A brief history: from RNN to Transformer
+
+### 1986 — Recurrent Neural Network (RNN)
+
+A deep-learning model that processes text **word by word**. It predicts the next token by statistically understanding the sentence one step at a time. Sequential, slow, struggles with long-range context.
+
+### 2017 — "Attention Is All You Need"
+
+The Transformer paper introduces the **self-attention** mechanism. These models still perform next-token prediction, but they no longer read linearly: self-attention looks at all words in the sentence simultaneously, assigning importance weights and building a global vector representation of the entire sentence or passage.
+
+### What is inside a Transformer?
+
+The generative AI we use today is based on a Transformer architecture. Unlike RNNs, Transformers enable **parallel processing**. They have two main components:
+
+- **Encoder** — converts an input sequence of embeddings (input words turned into numerical vectors) into a contextual representation called the **hidden state** or **context**. The output is a sequence of embedding vectors that capture each token's role within the sentence.
+- **Decoder** — uses the encoder's hidden state to iteratively generate an output sequence of tokens, one at a time. The raw decoder outputs are turned into a **probability distribution** over possible next tokens via **softmax**, which ensures probabilities fall between 0 and 1 and sum to 1.
+
+For the math behind this, see the [appendix](/ai/appendix).
+
+## The birth of AI Engineering
+
+Two consequences of the rapid growth of AI models:
+
+1. AI models are increasingly powerful and capable of more tasks, **enabling new applications**. Individuals and teams use AI to increase productivity, create economic value and improve quality of life.
+2. Training large language models requires data, computational resources and specialized expertise that only a handful of organizations can afford — Google, Meta, X, Microsoft, Anthropic, OpenAI, Alibaba, AWS. This led to **model-as-a-service**: large players make their models available as a service so others can build on top without making the upfront investment.
+
+**Net effect** — demand for AI applications has increased, while the barrier to building them has dropped. **AI Engineering** — building applications on top of already-available models — is now the fastest-growing engineering discipline.
+
+---
+
+## What generative AI is NOT
+
+Generative AI is **not** a deterministic program. Its output can be inaccurate, incomplete, or even discriminatory. This is not a bug to be patched away — it is a direct consequence of how the models work.
+
+Three properties to internalize:
+
+### Non-determinism
+
+The same prompt can produce different answers if the underlying model settings or the surrounding context change.
+
+### Inconsistency
+
+The model can generate different responses for the same prompt, or for prompts that differ only slightly.
+
+### Probabilistic results
+
+Unlike a personal computer or a spreadsheet — deterministic systems that always produce the same output for the same input — GenAI responses are often fluent, coherent and human-sounding (the **Fluency Effect**), which gives an impression of reliability and determinism ("apparent determinism").
+
+This familiarity leads users to **overestimate the accuracy** of the responses. The output is a probabilistic choice that can contain omissions, inaccuracies, factual errors, training-data biases, hallucinations, or bias.
+
+### Hallucinations
+
+AI models can generate responses that are **not grounded in facts** — invented or distorted information, with no source or evidence, that may seem plausible but does not match reality.
+
+> **Example** — Asked whether 9677 is prime, a model may confidently answer "No, 9677 = 13 × 745." That factorization is wrong (9677 is not divisible by 13). An incorrect initial assumption "snowballs" into a chain of further wrong claims. Asked the same question in a different session, the model may correctly answer that 9677 is *not* divisible by 13.
+
+> **Another example** — If someone on the Internet writes an essay claiming that all U.S. presidents are aliens, and that essay ends up in the training data, the model could later generate — with some probability — the statement that the current U.S. president is an alien.
+
+<Callout type="warn">
+  The real risk with AI is not that it makes mistakes. The risk is that **when it does, it does so extremely convincingly**.
+</Callout>
+
+## Why do we trust AI? Two cognitive traps
+
+### The Fluency Effect
+
+Because AI answers are fluent, coherent and "human", we read them as reliable.
+
+> **Prompt** — "Make up an Einstein quote about creativity."
+> **AI** — *"Creativity is nothing more than the spirit of rebellion applied to logic, so that intuition can see order where calculation sees only chaos." — Albert Einstein*
+
+Einstein never said this. The model invented it on request. The response *sounds* exactly like something Einstein might have said, which is precisely what makes it dangerous.
+
+### Confirmation Bias
+
+People believe answers that confirm what they already think more easily. A **leading question** invites the model to produce a response consistent with the framing, reinforcing the initial belief.
+
+> **Prompt** — "Why does smart working reduce productivity?"
+> **AI** — *Lists distractions, communication issues, social isolation, blurred boundaries, technology problems, reduced supervision, procrastination…*
+
+The model never questioned the premise. Ask instead *"What does the research say about the productivity effects of smart working?"* and you get a balanced answer.
+
+---
+
+## Key takeaways
+
+1. AI ⊃ ML ⊃ DL ⊃ GenAI — same field, nested subsets.
+2. Generative models predict the next token from a probability distribution; they do not "reason" in the human sense.
+3. Fluency is **not** accuracy. Always verify factual claims against a grounded source.
+4. The way you phrase a prompt shapes the answer. Beware of leading questions.
+
+Next: [2. Mindful Adoption: Ethics & Security →](/ai/ethics-security)
