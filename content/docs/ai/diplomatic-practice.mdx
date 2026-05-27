@@ -1,0 +1,348 @@
+---
+title: 5. AI for Diplomatic Practice
+description: Practical competences for using generative AI in diplomatic drafting, policy communication, speechwriting, stakeholder engagement, document synthesis, multilingual content production, and strategic communication on the SDGs.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+This section moves from general productivity to the **specific craft of diplomacy**. Diplomatic work is, before anything else, a work of **language**: drafting a démarche, summarizing a 200-page report before a delegation meeting, preparing a Secretary-General's remarks, talking to twelve constituencies in seven languages about the same SDG target. Generative AI does not replace any of these tasks — but it changes the **time, scale and reach** at which a single officer can perform them.
+
+The goal of this chapter is to build practical competence in **seven concrete workstreams** where AI is already useful inside UN-style environments, and to do so without losing the discipline that diplomatic communication requires: accuracy, neutrality, attribution, cultural sensitivity, and respect for confidentiality.
+
+<Callout type="warn">
+Nothing in this chapter overrides the **human-in-the-loop** principle of Chapter 3 or the **data classification** rules of Chapter 2. Diplomatic drafts, negotiating positions, internal memos and stakeholder lists are by default **non-public**. Use approved enterprise tools and never paste restricted content into consumer chatbots. Every prompt pattern below is consolidated in the **data-class and clearance matrix** at the end of the chapter — read that table before running any of these workflows on a real file.
+</Callout>
+
+<Callout>
+**No draft ships from a model.** Each workstream below produces an *input* to a clearance chain — desk officer → section chief → director → ASG/USG, and in Permanent Missions DCM → Permanent Representative → capital. AI accelerates the drafting node; it does not collapse the chain. Every section flags where its output re-enters that chain.
+</Callout>
+
+---
+
+## 5.0 Three traditions worth borrowing from
+
+Before treating AI as a productivity tool, it helps to anchor the chapter in three bodies of practice that long predate generative AI. Each one tells us something about *what diplomatic language is actually trying to do*, and therefore about what we should and should not delegate to a model.
+
+### Tactical empathy — Chris Voss, *Never Split the Difference*
+
+Voss's hostage-negotiation playbook (FBI, 2016) reframes negotiation as **the deliberate construction of the other side's emotional landscape**, not the exchange of positions. Its core moves transfer cleanly to diplomacy and to AI-assisted preparation:
+
+- **Mirroring** — repeating the last one-to-three words of the counterpart to invite elaboration.
+- **Labeling** — naming the emotion or position you observe: *"It seems like the delegation is concerned that…"*. Labels defuse; they do not concede.
+- **Calibrated open questions** — *"How are we supposed to do that?"*, *"What is the biggest challenge you face?"*. They transfer the problem-solving load without confrontation.
+- **The accusation audit** — listing, out loud and first, every negative thing the counterpart could say about you, so they cannot weaponize it.
+- **"That's right" vs. "you're right"** — the goal is the former (recognition), never the latter (polite dismissal).
+- **Black Swans** — the unknown facts that, if surfaced, change the game; assume they exist.
+
+We will use these as **prompt scaffolds** throughout the chapter.
+
+### Pool of shared meaning — Patterson et al., *Crucial Conversations*
+
+Where Voss writes for adversarial settings, Patterson, Grenny, McMillan and Switzler write for **high-stakes conversations in which the relationship must survive the disagreement** — the daily reality of multilateral work. Their key constructs:
+
+- **Start with heart.** Before opening your mouth (or your prompt window), ask: *What do I really want — for myself, for the other side, for the relationship?*
+- **Pool of shared meaning.** Dialogue exists to enlarge a shared pool of facts, stories and feelings. Anything that makes others withhold from the pool — sarcasm, status games, hidden agendas — is a failure mode.
+- **Path to Action** (see → story → feel → act). Two delegations can see the same fact and tell themselves very different *stories* about it. Most disputes are story-level, not fact-level.
+- **STATE** for sharing controversial views: **S**hare your facts, **T**ell your story, **A**sk for others' paths, **T**alk tentatively, **E**ncourage testing.
+- **AMPP** for listening: **A**sk, **M**irror, **P**araphrase, **P**rime.
+- **Contrasting** — pre-empting misreadings: *"I don't want X; what I do want is Y."*
+- **Mutual purpose and mutual respect** as the safety conditions without which no content lands.
+
+These are the **structural templates** we will hand to the model when we ask it to draft.
+
+### The grammar of diplomatic English — Friedrich (ed.), *English for Diplomatic Purposes*
+
+Friedrich and her contributors describe how English actually behaves when it is used **as a working language among non-native speakers in formal multilateral settings** — i.e. ELF (English as a Lingua Franca) in diplomacy. The takeaways most relevant to AI use:
+
+- **Hedging and mitigation** are not weakness; they are the load-bearing structure of negotiated text (*"may wish to consider"*, *"in our understanding"*, *"without prejudice to"*).
+- **Constructive ambiguity** is sometimes the only available agreement.
+- **Politeness and face-work** vary sharply across cultures; a literal translation can be an insult.
+- **Register stability** matters more than rhetorical brilliance: surprises in tone read as political signals, whether or not they were intended.
+- **Pronunciation, idiom and humour** travel poorly; written text travels further than spoken nuance.
+
+We will treat these as **constraints** the model must respect, not stylistic preferences.
+
+> **Reading map.** Voss tells us *what to do in the room*. Patterson et al. tell us *how to keep the room safe enough that anything can be said in it*. Friedrich tells us *what the room sounds like when it is working*. The rest of this chapter shows how to encode each of these into prompts and workflows.
+
+---
+
+## 5.1 Diplomatic Drafting
+
+Diplomatic drafting is governed by conventions that the casual reader rarely notices: the difference between *takes note of*, *welcomes*, *urges* and *demands*; the careful use of preambular vs. operative paragraphs; the agreed language carried over from previous resolutions. A model that ignores these conventions produces text that is fluent but **diplomatically wrong**.
+
+### What AI does well
+
+- Producing a **first draft** of a note verbale, aide-mémoire, talking points, or concept note from a short brief.
+- **Re-leveling** the same content across registers: working level, ambassadorial, ministerial.
+- Generating **alternative formulations** of a single paragraph so the negotiator can see the range of available compromises.
+- Checking a draft against **agreed language** when the prior text is provided in the prompt.
+
+### What AI does poorly without supervision
+
+- Inventing citations to resolutions, treaty articles or paragraph numbers.
+- Picking the right **verb of commitment**. *"Calls upon"* and *"requests"* are not synonyms.
+- Preserving the **silence procedure** rhythm — what is left unsaid is often the point.
+
+### A drafting prompt that works
+
+> *Act as a desk officer drafting a note verbale on behalf of \[Mission]. The recipient is \[Mission/Secretariat]. The purpose is to \[objective]. Use UN house style and formal third-person register. Reuse, where possible, the language of \[paste prior agreed text]. Produce three variants: (a) a neutral notification, (b) a firmer expression of concern, (c) a request for action. Do not invent references; mark any factual claim that needs verification with `[VERIFY]`.*
+
+The `[VERIFY]` convention is a small habit that pays off: it forces the model to externalize uncertainty instead of hiding it inside confident prose.
+
+### Hedging as load-bearing language
+
+Friedrich's contributors make a point that newcomers to diplomatic drafting often miss: **hedges are not softeners glued onto a sentence — they are the sentence's contract with future readers**. *"Takes note of with appreciation"* does not commit anyone to anything, and that is precisely its function. Instruct the model explicitly:
+
+> *Preserve all hedging devices in the source. Do not "improve" `may wish to consider` into `should`. If you compress, preserve the modality.*
+
+Models trained on web prose default to confident assertion; diplomatic drafting requires the opposite default. Make the constraint explicit every time.
+
+**Clearance re-entry.** The model's output is a *zero draft*. It re-enters the chain at the desk-officer review, before the section chief sees it. Mark `[VERIFY]` flags as open issues for that review; do not resolve them silently.
+
+---
+
+## 5.2 Policy Communication
+
+Policy communication is the bridge between technical analysis and political audiences. A climate finance paragraph that lands well in a G77 statement will not land in an OECD donor briefing, even when the underlying fact is identical.
+
+### Use cases
+
+- **Audience adaptation**: rewriting the same policy point for delegates, parliamentarians, civil society, and media.
+- **Frame analysis**: asking the model to surface the implicit frames in a draft ("Is this text framing migration primarily as a security issue, a development issue, or a human-rights issue?").
+- **Counter-argument mapping**: generating the most likely objections from each negotiating bloc so the policy team can prepare responses before the meeting, not during it.
+
+### Prompt pattern: the three-column brief
+
+Ask the model to produce, from a single policy note, a table with: **what we say**, **what each audience hears**, **what each audience is likely to ask next**. This single artifact saves hours of internal preparation and makes blind spots visible.
+
+This is the *Path to Action* of Patterson et al. operationalized: the same **see** (the policy fact) produces different **stories** in different audiences, and the column "what they hear" is exactly the story they will tell themselves. If you skip it, you will spend the meeting arguing about facts when the disagreement is about stories.
+
+### The accusation audit, applied to policy launches
+
+Borrow Voss's accusation audit before any sensitive communication: ask the model to list, in the harshest possible terms, every accusation that could be made against the policy ("this is colonial", "this is unfunded", "this protects rich-country interests"). Address the strongest two in the launch text itself — through **contrasting** (*"This proposal is not X; it is Y"*) rather than through defensiveness. Pre-empting an attack neutralizes it; ignoring it amplifies it.
+
+**Clearance re-entry.** Audience-adapted variants and frame analyses are *internal staff work*. They feed the policy team's clearance package, not the public communications channel. Strip any AI-generated counter-argument map before circulating beyond the drafting team — surfacing it externally hands the playbook to the opposition.
+
+---
+
+## 5.3 Speechwriting
+
+Speechwriting for senior officials is one of the highest-leverage uses of generative AI in a diplomatic setting — and one of the most dangerous if used carelessly. A speech is not only content: it is **voice, cadence, and political signal**.
+
+### A staged workflow
+
+1. **Structure first.** Use the model to propose three different architectures for a 7-minute statement, given the audience and the call to action. Pick one.
+2. **Bullet expansion.** Feed the model the chosen architecture as bullet points and ask for a draft in the principal's known register — provide two or three prior speeches as voice samples.
+3. **Stress test.** Ask the model to read the draft as if it were a hostile journalist, a sceptical donor, and a youth representative. Rewrite the passages that fail any of the three readings.
+4. **Sound check.** Ask the model to mark passages that are hard to read aloud (long subordinate clauses, consonant clusters, ambiguous pronouns).
+
+<Callout>
+Voice is not transferable across principals. A speech written in the cadence of one Secretary-General will sound wrong in the mouth of another. Always provide **real prior speeches** of the actual speaker as voice samples — never assume the model knows.
+</Callout>
+
+### The "late-night FM DJ" rule for delivery notes
+
+Voss insists that *how* a sentence is delivered routinely outweighs *what* it says — his 7-38-55 shorthand (words / tone / body) is overstated but directionally right. When the model prepares a speech, ask it also to produce **delivery notes**: where to slow down, where to pause, where to drop the voice. The same paragraph delivered fast and bright reads as defensive; delivered slowly and low it reads as resolved. This is also where Friedrich's warning bites: **idiom and humour do not survive translation in real time**. Have the model flag every idiom in the draft for replacement with literal language any interpreter can render at speed.
+
+**Clearance re-entry.** A speech draft is one of the most tightly cleared products a UN office produces: speechwriter → chief of staff → principal → (often) capital or executive office. Treat AI output as a *scaffold for the speechwriter*, never as a draft for the principal. Use only **delivered, public** prior speeches as voice samples; embargoed or unreleased speeches must not enter the prompt.
+
+---
+
+## 5.4 Stakeholder Engagement
+
+A mid-sized UN process can involve **hundreds of stakeholders**: Member States, agencies, funds, programmes, civil society, private sector, academia. Keeping track of who said what, who wants what, and who is aligned with whom is a coordination problem at the edge of what a human team can hold in working memory.
+
+### Where AI helps
+
+- **Mapping**: from a folder of position papers and statements, extract for each stakeholder their stated position, red lines, and preferred language.
+- **Alignment matrices**: produce a matrix of stakeholders × issues with a one-cell summary of each position.
+- **Outreach personalization**: from a single core message, generate per-stakeholder versions that respect each actor's frame — without changing the substance.
+- **Meeting prep**: for an upcoming bilateral, summarize the last five interactions, the open asks, and the points the counterpart raised that we did not yet answer.
+
+### Labels and calibrated questions, before the meeting
+
+For each stakeholder, ask the model to draft, from their public record:
+
+- **Three labels** in Voss's form — *"It seems like \[Mission] is most concerned about…"*, *"It looks like the red line is…"*, *"It sounds like the price of agreement is…"*. Labels are hypotheses the human officer will test in the room, not conclusions.
+- **Three calibrated questions** the officer can ask without sounding adversarial — *"How would your capital see this?"*, *"What would make this workable for you?"*, *"What are we missing?"*
+- **One Black Swan hypothesis** — a fact, constraint, or domestic pressure we do not yet know about but that, if true, would explain the counterpart's behaviour. The point is not to believe the hypothesis; it is to remain *open* to it.
+
+### A boundary to hold
+
+Do **not** use AI to infer stakeholders' private intentions, internal divisions, or personal characteristics from public signals. The line between legitimate political analysis and intrusive profiling is real, and the model will happily cross it if asked. Stay on the side of what the stakeholder has *publicly stated*. *Crucial Conversations* gives the clean test: would including this inference *enlarge the pool of shared meaning* in a future conversation with the stakeholder themselves, or would it poison it?
+
+**Clearance re-entry.** Stakeholder maps and alignment matrices are **internal-use only** and frequently sensitive. They are cleared at section-chief level for circulation inside the team and at director level for any wider use; they are not, under any circumstance, public products. If the underlying inputs include non-public read-outs of bilaterals, the artefact inherits that classification.
+
+---
+
+## 5.5 Document Synthesis
+
+The single most common request inside a UN office is: *"Can you read this and tell me what matters?"* The document may be a 300-page evaluation, a treaty body concluding observation, or a sheaf of overnight cables. Synthesis is no longer the bottleneck it used to be — but quality synthesis still is.
+
+### A reliable synthesis prompt
+
+> *You are summarizing \[document title] for a \[role] who has \[time budget] to read your summary. Produce: (1) a 5-line executive summary, (2) the three decisions the reader must make, (3) the five facts most likely to be challenged in a public setting, (4) a list of every recommendation in the document with the paragraph number, (5) anything the document is conspicuously silent about. Quote verbatim with paragraph numbers wherever you make a factual claim.*
+
+The last item — *what the document does not say* — is the one humans most often miss and the one a well-prompted model can surface reliably.
+
+### Multi-document synthesis
+
+For a synthesis across many sources (e.g. all Member State statements during a general debate), prefer tools with **grounded retrieval** (NotebookLM-style or enterprise RAG) over open chat. Grounded tools cite the source for each claim, which is the difference between a brief you can hand to a principal and one you cannot.
+
+### Paraphrase as a test, not a summary
+
+The **P** in Patterson et al.'s AMPP loop — **paraphrase** — is the most under-used quality control in document work. Ask the model to read its own summary back as if it were the document's author and answer one question: *"Would you sign this as a fair restatement of what you wrote?"* If the answer is anything other than an unqualified yes, the summary is not done. This catches a class of subtle distortions — verb softening, omitted caveats, smuggled-in conclusions — that conventional checking misses.
+
+**Clearance re-entry.** A synthesis re-enters the chain at the level of the person who *commissioned* it — typically a P-5 or director preparing a principal for a meeting. The reviewer's job is not to re-read the source document but to spot-check the five highest-stakes claims against verbatim quotes; the chapter's prompt explicitly produces those quotes for that purpose.
+
+---
+
+## 5.6 Multilingual Content Production
+
+The UN operates in six official languages and works with many more. Translation is not a peripheral activity — it is part of the legitimacy of the organization.
+
+### What AI changes
+
+- **Drafts in parallel.** A speech, a press line, or a social media thread can now be produced in six languages in the time it used to take to produce one.
+- **Register control.** Modern models can hold register (formal, neutral, popular) across languages, which previously required senior translators in each language.
+- **Back-translation as a quality check.** Ask the model to translate the target text back into the source language and compare. Divergences are where ambiguity, idiom, or politically sensitive choices live.
+
+### What AI does not change
+
+- The **legal status** of translations. Treaty language, resolution text, and official correspondence still require qualified human translators and, where relevant, the concordance procedure.
+- **Cultural and political sensitivity.** A literal translation of "stakeholder" or "ownership" or "resilience" lands very differently in Arabic, Mandarin, or French diplomatic registers. A human reviewer who speaks the target language is non-negotiable for any text that will be published.
+- **Named entities and toponyms.** Names of places, peoples, and contested territories carry political weight. Always pre-load the model with the **agreed UN terminology** (UNTERM) for the relevant terms.
+
+### English as a Lingua Franca, not as a native language
+
+Friedrich's central observation is that the English of UN corridors is **ELF, not American or British English** — it is a third register, shaped by non-native users, optimized for clarity over flourish. When the source language is English and the audience is multilateral, instruct the model to:
+
+- prefer **short main clauses** over long subordinated ones;
+- avoid **phrasal verbs** that have no clean equivalent in Romance languages (*get across*, *push back*, *roll out*);
+- avoid **culturally bound metaphors** (sports, weather, religion);
+- keep **terminology consistent** across the document — synonyms are a translator's enemy, not an elegance.
+
+This is not "dumbing down". It is honouring the actual communicative community the text serves.
+
+**Clearance re-entry.** Working translations re-enter the chain at the desk that owns the source text. Anything destined for **publication, the record, or treaty effect** must additionally be cleared by **DGACM** (or the equivalent translation service of the entity) and, where applicable, by the **concordance** procedure. The AI pass is preparatory; it does not substitute for either step.
+
+---
+
+## 5.7 Strategic Communication on the SDGs
+
+Strategic communication is not advocacy. It is the deliberate, evidence-based shaping of public understanding around the **2030 Agenda** and its 17 Sustainable Development Goals. With less than five years to the deadline and most targets off track, the communication problem is not a lack of content — it is **signal in a saturated channel**.
+
+### Where AI is reshaping SDG communication
+
+1. **Narrative consistency at scale.** A single country team can now produce coherent SDG narratives across press, social, parliamentary briefings and donor reports, all anchored to the same set of indicators.
+2. **Localization.** Global SDG language ("leaving no one behind") rarely moves audiences. Models can re-anchor the same message in **local data, local examples, and local idiom** — provided the local data are supplied.
+3. **Evidence linking.** Every public claim about progress on an SDG target can be linked, automatically, to the indicator behind it. Communication becomes auditable.
+4. **Counter-disinformation.** SDG topics — climate, gender, migration, vaccines — attract organized disinformation. AI tools help monitor narratives, detect coordinated framing shifts, and prepare timely, factual counter-content.
+
+### A planning template
+
+For any SDG campaign, ask the model to produce, before any creative work begins:
+
+| Element | Question |
+|---|---|
+| **Goal & Target** | Which SDG and which specific target are we trying to move? |
+| **Indicator** | Which official indicator will we cite, and what is its latest value? |
+| **Audience** | Who specifically — not "the public" — must change behavior, attitude, or decision? |
+| **Current narrative** | What does this audience currently believe about this issue? |
+| **Desired narrative** | What do we want them to believe, do, or support? |
+| **Bridge** | What credible message moves them from current to desired? |
+| **Risks** | How could this message be misread, weaponized, or backfire? |
+| **Measurement** | How will we know it worked? |
+
+This template is mundane. That is the point: strategic communication fails when it skips the mundane work and goes straight to the campaign hashtag.
+
+### From "you're right" to "that's right"
+
+Voss's distinction is the sharpest available test for SDG communication. *"You're right"* is what an audience says to end a conversation politely; *"that's right"* is what they say when a message has actually named their experience back to them. Ask the model, for any draft SDG message, to predict which of the two responses it would elicit from each target audience — and to rewrite the message until the prediction is *"that's right"*. The technique is uncomfortable because it forces specificity; that is also why it works.
+
+**Clearance re-entry.** Public-facing SDG content sits in the **communications clearance chain**: drafting officer → communications focal point → spokesperson's office → (for senior or politically sensitive content) the principal's office. AI-generated counter-disinformation drafts are particularly sensitive: a mis-targeted rebuttal amplifies the original disinformation. Route through the spokesperson, not the desk.
+
+---
+
+## 5.8 An advanced toolkit, drawn from the sources
+
+The three reference works offer a deeper bench of techniques than the foundational concepts of §5.0. The ones below are the ones we have found most useful to encode into AI workflows. Each is named in the source vocabulary so participants can return to the originals.
+
+### From Voss — *Never Split the Difference*
+
+- **Loss-aversion framing.** Drawing on Kahneman & Tversky's prospect theory, Voss reframes offers so that the counterpart perceives *loss avoided* rather than *gain obtained*: *"people will take greater risks to avoid losses than to achieve gains."* When the model drafts a proposal, ask it to produce two versions — one anchored on gain, one on loss avoidance — and choose deliberately rather than by default.
+- **The Ackerman model.** A four-step bargaining sequence (open at 65% of target, then 85% / 95% / 100%, with **precise non-round numbers** and a final non-monetary concession). Useful as a scaffold for sequenced offers in financing or burden-sharing negotiations: the model can pre-compute the sequence and the linguistic packaging for each step.
+- **Odd numbers as credibility.** *"The odd numbers gave them the weight of thoughtful calculation."* Instruct the model to avoid round figures in any quantitative proposal — they read as arbitrary and invite counter-anchoring.
+- **The "fair" F-bomb.** *"Fairness"* is deployed three ways: as accusation, as deflection, and as proactive framing. Have the model flag every occurrence of *fair / fairness / equitable* in inbound texts and classify which of the three uses applies. The label changes the response.
+- **Calibrated "How" over "Why".** *Why* questions trigger defensiveness across nearly every culture; *How* and *What* questions transfer the problem to the counterpart while preserving their sense of control. When the model drafts questions for a bilateral, instruct it to convert every *why* into a *how* or *what*.
+
+### From Patterson et al. — *Crucial Conversations*
+
+- **Silence vs. violence — six patterns.** Masking, avoiding, withdrawing (silence); controlling, labeling, attacking (violence). Ask the model to scan a transcript of a meeting or a chain of correspondence and tag each move. The pattern usually reveals itself before the substance does.
+- **The three clever stories.** Victim, villain, helpless — the self-justifying stories that people tell themselves under stress. Their counter-questions are the operational tool: *"What am I pretending not to notice about my own role?"*, *"Why would a reasonable, rational and decent person do what they are doing?"*, *"What do I really want — for me, for them, for the relationship?"* These are excellent prompt seeds before drafting a sensitive response.
+- **Refuse the Fool's Choice.** When a draft frames the situation as an either/or (*sovereignty or coordination*, *speed or legitimacy*), instruct the model to look for the **and**. The diplomatic deal almost always lives in the *and*.
+- **CRIB — Commit, Recognize, Invent, Brainstorm.** A four-step routine for restoring mutual purpose when negotiators are stuck on positions. The model can generate a CRIB sheet for any deadlocked file: commitment statement, the purposes behind each side's stated position, a candidate higher-order purpose, and a brainstorm of strategies that serve it.
+- **CPR — Content, Pattern, Relationship.** Three escalating levels at which an issue lives. Ask the model: *"Is this a content disagreement, a pattern disagreement, or a relationship disagreement?"* Most multilateral deadlocks read as content but are pattern or relationship; addressing the wrong level wastes meetings.
+- **WWWF for outcomes.** Every AI-assisted agreement should end with *Who does What by When, and how is Follow-up verified?* Without this, *"all parties commit"* means no one does.
+
+### From Friedrich (ed.) — *English for Diplomatic Purposes*
+
+- **Force and Grace (Biljana Scott).** *"A fist of iron in a velvet glove"* — the dual capacity to assert (categorize, define, argue) and to attend (hedge, acknowledge, leave face-space). Use this as an explicit dual constraint in drafting prompts: *"produce a paragraph that is high on force and high on grace; mark the linguistic devices used for each."*
+- **Contextualized politeness (Ishihara).** Politeness is not a setting but a function of three variables: **status, distance, and stakes**. Tell the model the three values before asking for a register. *"Higher status, distant, high stakes"* and *"equal status, close, low stakes"* generate very different — and equally appropriate — texts.
+- **Compassionate English Communication (LeBlanc).** A three-stage cycle — **Description → Empathic Analysis → SMART-Choice Request** — that moves diplomatic correspondence beyond polite refusal toward addressing the unmet need behind a position. A strong template for replies to difficult letters.
+- **The "Asian way" in ELF (Kirkpatrick, Subhan & Walkinshaw).** Consensus-oriented, harmony-preserving English usage in ASEAN and adjacent fora — indirectness, reluctance to refuse outright, relational framing. When the audience sits in this tradition, instruct the model to soften imperatives into invitations (*"how might we explore…"* rather than *"you must…"*) and to lead with relational preamble.
+- **Peace linguistics / nonkilling linguistics (Friedrich & Gomes de Matos).** A deliberate audit of martial and dominance metaphors (*stab in the back*, *killer argument*, *battleground*) and their replacement with *positivizers*. Easy to automate as a pre-publication pass over any public-facing SDG or peace-and-security text.
+- **World Englishes.** *"In the realm of World Englishes, there exists less judgment of the correctness of a variety and more consideration of its functional range."* When processing inbound text from non-native speakers, instruct the model **not** to "correct" toward inner-circle English — preserve the speaker's variety and read its pragmatics on its own terms. Misattributing non-standard forms to incompetence or evasiveness is one of the costlier errors in multilateral practice.
+
+---
+
+## 5.9 Data-class and clearance matrix
+
+Read this table before running any prompt in this chapter on a real file. It consolidates, for each workstream, the **maximum data classification** the inputs may carry, the **minimum tool tier** required to process that classification, and the **clearance node** at which the AI output re-enters the human chain.
+
+**Data classes** follow the standard UN three-tier model: **PUBLIC** (cleared for external release), **INTERNAL** (UN system, no external distribution), **RESTRICTED / STRICTLY CONFIDENTIAL** (named-recipient or higher).
+
+**Tool tiers:**
+- **Tier 1 — Consumer chat.** Public-web LLM interfaces (ChatGPT.com, Claude.ai, Gemini.google.com without a workspace contract). **PUBLIC inputs only.**
+- **Tier 2 — Enterprise LLM with no-train, no-retention contract.** UN-tenant Microsoft 365 Copilot, enterprise OpenAI / Anthropic / Google Workspace agreements with data-processing addenda. **INTERNAL inputs.**
+- **Tier 3 — Sovereign / on-premise / UNICC-hosted.** Self-hosted or UN-controlled inference, audited and contract-bound. **RESTRICTED inputs, where any AI use is authorised at all.**
+
+| § | Workstream | Typical inputs | Max data class | Min tool tier | Clearance re-entry |
+|---|---|---|---|---|---|
+| 5.1 | Diplomatic drafting | Brief, prior agreed language, house style | INTERNAL | Tier 2 | Desk officer → section chief |
+| 5.2 | Policy communication | Policy note, audience profiles, public positions | INTERNAL | Tier 2 | Policy team → director |
+| 5.3 | Speechwriting | Talking points, **delivered public** prior speeches | INTERNAL | Tier 2 | Speechwriter → chief of staff → principal |
+| 5.4 | Stakeholder engagement | Position papers, public statements, meeting read-outs | INTERNAL → RESTRICTED | Tier 2 → Tier 3 | Section chief → director |
+| 5.5 | Document synthesis | Evaluations, treaty body docs, cables | INTERNAL → RESTRICTED | Tier 2 → Tier 3 | Commissioning officer (P-5 / D-1) |
+| 5.6 | Multilingual production | Working drafts, public-facing copy | PUBLIC → INTERNAL | Tier 2 | Source-text desk → **DGACM for publication / record / treaty effect** |
+| 5.7 | Strategic communication (SDGs) | Indicator data, audience research, draft messaging | PUBLIC → INTERNAL | Tier 1 (drafting) → Tier 2 (sensitive) | Comms focal point → spokesperson's office |
+
+<Callout type="warn">
+If a prompt anywhere in this chapter would require inputs above the tier of tool you have access to, **stop**. The correct response is to escalate the tooling question to your information-management focal point, not to redact the input and proceed. Redacted RESTRICTED text is still RESTRICTED text.
+</Callout>
+
+---
+
+## A practical exercise
+
+Pick a real document from your portfolio — a draft statement, a concept note, a country brief — and run it through the following pipeline:
+
+1. **Synthesize** it using the prompt in 5.5.
+2. **Re-level** it for two audiences using the pattern in 5.2.
+3. **Translate** the public version into one other UN official language and **back-translate** it. Read the divergences.
+4. **Stress-test** the result against the three readers in 5.3.
+5. Mark every `[VERIFY]` flag the model raised and resolve it manually before circulating.
+
+The goal is not to ship the AI output. The goal is to feel, in your own work, where the model **saves you time**, where it **misleads you**, and where it forces you to be **more explicit about what you actually want to say**. That last effect — the disciplining of one's own thinking — is, in the long run, the most diplomatic skill of all.
+
+---
+
+## Further reading
+
+The frameworks borrowed in this chapter are drawn from three works available to participants in the course library:
+
+- Voss, C. & Raz, T. (2016). *Never Split the Difference: Negotiating As If Your Life Depended On It*. Harper Business. — Source for tactical empathy, mirroring, labeling, calibrated questions, the accusation audit, the *"that's right"* test, and Black Swans.
+- Patterson, K., Grenny, J., McMillan, R. & Switzler, A. (2011). *Crucial Conversations: Tools for Talking When Stakes Are High* (2nd ed.). McGraw-Hill. — Source for Start with Heart, the Pool of Shared Meaning, the Path to Action, STATE, AMPP, contrasting, and the safety conditions of mutual purpose and mutual respect.
+- Friedrich, P. (ed.) (2016). *English for Diplomatic Purposes*. Multilingual Matters. — Source for hedging and mitigation, register stability, constructive ambiguity, English as a Lingua Franca, and the cross-cultural pragmatics of diplomatic English.
+
+None of these works was written with generative AI in mind. That is precisely why they are useful: they describe the communicative discipline that a model, left unprompted, will not supply on its own.

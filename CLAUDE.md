@@ -2,6 +2,14 @@
 
 Guidance for Claude Code (claude.ai/code) when working in this repository.
 
+## Framework
+
+This site is built with **Fumadocs**. Before changing layout, navigation, themes, or MDX/content config, consult the official documentation:
+
+- **Fumadocs docs:** https://www.fumadocs.dev/docs
+
+Do not invent or modify Fumadocs configuration based on guesses or by reading `node_modules/`. Use the official docs above as the source of truth.
+
 ## Agent skills
 
 ### Issue tracker
