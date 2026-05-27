@@ -39,3 +39,5 @@ next-env.d.ts
 
 # duplicate font (canonical copy is in src/fonts/)
 public/UncutSans-Variable.ttf
+
+.vercel

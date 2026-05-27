@@ -1,6 +1,22 @@
 ---
-title: Docs
-description: Welcome to the documentation.
+title: Welcome!
+description: Welcome to the course documentation.
 ---
 
-Hello World!
+import { Cards, Card } from "fumadocs-ui/components/card";
+import { CpuIcon, DatabaseIcon } from "lucide-react";
+
+<Cards>
+  <Card
+    icon={<CpuIcon />}
+    title="AI"
+    href="/ai"
+    description="Artificial intelligence for global public diplomacy and sustainable development."
+  />
+  <Card
+    icon={<DatabaseIcon />}
+    title="Data"
+    href="/data"
+    description="Data sources, methods, and resources powering the research."
+  />
+</Cards>

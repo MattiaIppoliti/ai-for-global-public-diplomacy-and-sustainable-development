@@ -3,7 +3,7 @@
 @import "fumadocs-ui/css/preset.css";
 
 @theme {
-  /* Light mode — warm cream palette */
+  /* Light mode, warm cream palette */
   --color-fd-background: #f9f8f6;
   --color-fd-foreground: #1a1a18;
   --color-fd-muted: #fdfbf0;
@@ -27,7 +27,7 @@ body {
   font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
 }
 
-/* Sidebar active — cream primary invisible on cream bg, use dark tint */
+/* Sidebar active, cream primary invisible on cream bg, use dark tint */
 #nd-sidebar [data-active=true] {
   background-color: rgba(26, 26, 24, 0.08) !important;
   color: #1a1a18;
@@ -36,13 +36,13 @@ body {
   background-color: #1a1a18 !important;
 }
 
-/* TOC active — same subtle gray as sidebar */
+/* TOC active, same subtle gray as sidebar */
 #nd-toc [data-active=true] {
   background-color: rgba(26, 26, 24, 0.08) !important;
   color: #1a1a18 !important;
 }
 
-/* Dark mode — custom palette */
+/* Dark mode, custom palette */
 .dark {
   --color-fd-background: #121212;
   --color-fd-foreground: #e8e6e0;
@@ -68,7 +68,7 @@ body {
   --color-fd-secondary: #2c2c2b;
 }
 
-/* Dark mode — restore visible active states */
+/* Dark mode, restore visible active states */
 .dark #nd-sidebar [data-active=true] {
   background-color: rgba(255, 255, 255, 0.1) !important;
   color: #f9f8f6;

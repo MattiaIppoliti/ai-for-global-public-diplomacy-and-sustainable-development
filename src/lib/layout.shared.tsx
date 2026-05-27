@@ -13,7 +13,6 @@ export function baseOptions(): BaseLayoutProps {
             src="/Luiss-icon.png"
             alt="Luiss"
             style={{ height: 28, width: "auto", objectFit: "contain" }}
-            className="dark:[filter:invert(1)]"
           />
           <span className="font-semibold leading-none">Luiss Docs</span>
         </span>
