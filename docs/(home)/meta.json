@@ -1,6 +1,6 @@
 {
-  "title": "Docs",
-  "description": "Documentation",
+  "title": "Home",
+  "description": "Courses",
   "root": true,
   "pages": ["index"]
 }

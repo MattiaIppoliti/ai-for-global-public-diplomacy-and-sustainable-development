@@ -36,3 +36,6 @@ next-env.d.ts
 
 # claude
 .claude/
+
+# duplicate font (canonical copy is in src/fonts/)
+public/UncutSans-Variable.ttf
